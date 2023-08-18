@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { fetchImages } from './api.services/api';
+import { fetchImages } from '../api.services/api';
 
-import Searchbar from './Searchbar/Searchbar';
-import ImageGallery from './ImageGallery/ImageGallery';
-import Modal from './Modal/Modal';
-import Button from './Button/Button';
-import CustomLoader from './Loader/Loader';
+import Searchbar from '../Searchbar/Searchbar';
+import ImageGallery from '../ImageGallery/ImageGallery';
+import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
+import CustomLoader from '../Loader/Loader';
 
-import s from './App/App.module/App.module.css';
+import s from './App.module/App.module.css';
 
 
 class App extends Component {
