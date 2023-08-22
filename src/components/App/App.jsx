@@ -9,7 +9,6 @@ import CustomLoader from '../Loader/Loader';
 
 import s from './App.module/App.module.css';
 
-
 class App extends Component {
   state = {
     images: [],
@@ -18,6 +17,7 @@ class App extends Component {
     page: 1,
     isLoading: false,
     showModal: false,
+    totalHits: 0,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,17 +36,23 @@ class App extends Component {
     this.setState({ isLoading: true });
 
     try {
-      const images = await fetchImages(query, page);
+      const { hits, totalHits } = await fetchImages(query, page);
 
       this.setState(prevState => ({
-        images: [...prevState.images, ...images.hits], 
-        page: prevState.page + 1,
+        images: [...prevState.images, ...hits],
+        totalHits,
       }));
     } catch (error) {
       console.error('Error fetching images:', error);
     } finally {
       this.setState({ isLoading: false });
     }
+  };
+
+  loadMoreImages = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }), this.fetchImages);
   };
 
   onSelectImage = selectedImage => {
@@ -58,17 +64,17 @@ class App extends Component {
   };
 
   render() {
-    const { images, selectedImage, isLoading, showModal } = this.state;
-  
+    const { images, selectedImage, isLoading, showModal, totalHits } = this.state;
+
     return (
       <div className={s.App}>
         <Searchbar onSubmit={this.onChangeQuery} />
-       
+
         <ImageGallery images={images} onSelect={this.onSelectImage} />
         {isLoading && <CustomLoader />}
         {images.length > 0 && !isLoading && (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={this.fetchImages} shouldRender={images.length > 0 && !isLoading && images.length % 12 === 0} />
+            {images.length < totalHits && <Button onClick={this.loadMoreImages} />}
           </div>
         )}
         {showModal && (
@@ -77,7 +83,6 @@ class App extends Component {
       </div>
     );
   }
-  
 }
 
 export default App;
