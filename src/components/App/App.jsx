@@ -23,6 +23,8 @@ class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.query !== this.state.query) {
       this.fetchImages();
+    } else if (prevState.page !== this.state.page) {
+      this.fetchImages();
     }
   }
 
@@ -52,7 +54,7 @@ class App extends Component {
   loadMoreImages = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-    }), this.fetchImages);
+    }));
   };
 
   onSelectImage = selectedImage => {
