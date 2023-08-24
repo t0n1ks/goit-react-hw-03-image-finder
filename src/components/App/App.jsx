@@ -21,11 +21,9 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.query !== this.state.query) {
+    if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
       this.fetchImages();
-    } else if (prevState.page !== this.state.page) {
-      this.fetchImages();
-    }
+    } 
   }
 
   onChangeQuery = query => {
